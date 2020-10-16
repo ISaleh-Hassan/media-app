@@ -10,23 +10,22 @@ import java.util.ArrayList;
 public class CustomerController {
     CustomerRepository customerRepository = new CustomerRepository();
 
-    @GetMapping("/")
-    public String index(){
-        return "My first controller!";
-    }
-    @RequestMapping(value= "/greet", method = RequestMethod.GET)
-    public String greet(@RequestParam("name") String name){
-        return "Howdy " + name;
-    }
-
-    @RequestMapping(value = "/{firstName}/{lastName}", method = RequestMethod.GET)
-    public String getCustomer(@PathVariable String firstName,@PathVariable String lastName){
-        return firstName + " " + lastName;
-    }
-
-    @RequestMapping(value = "/api/customers", method = RequestMethod.GET)
+    @GetMapping(value = "/api/customers")
     public ArrayList<Customer> getAllCustomers(){
         return customerRepository.getAllCustomers();
     }
 
+//TODO: A user should not get back an email when he call this method.
+    @RequestMapping(value = "/api/addcustomer", method = RequestMethod.POST)
+    public Boolean addNewCustomer(@RequestBody Customer customer){
+        int custId= customer.getCustomerId();
+        String custFirstName        = customer.getFirstName();
+        String custLastName         = customer.getLastName();
+        String custCountry          = customer.getCountry();
+        String custPostalCode       = customer.getPostalCode();
+        String custPhon             = customer.getPhone();
+
+        customer= new Customer(custId,custFirstName,custLastName,custCountry, custPostalCode, custPhon,customer.getEmail());
+        return customerRepository.addCustomer(customer);
+    }
 }
