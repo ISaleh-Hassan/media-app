@@ -1,23 +1,21 @@
-package com.experis.saleh.spring.models;
-
-public class Customer {
+package com.experis.saleh.spring.data_access;
+public class CustomerAPI {
     private int customerId;
     private String firstName;
     private String lastName;
     private String country;
     private String postalCode;
     private String phone;
-    private String email;
 
-    public Customer(){}
-    public Customer(int costomerId, String firstName, String lastName, String country, String postalCode, String phone,String email){
+
+    public CustomerAPI(int costomerId, String firstName, String lastName, String country, String postalCode, String phone){
         this.customerId = costomerId;
         this.firstName= firstName;
         this.lastName= lastName;
         this.country= country;
         this.postalCode= postalCode;
         this.phone= phone;
-        this.email=email;
+
     }
 
     public int getCustomerId() {
@@ -68,12 +66,6 @@ public class Customer {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }
 

@@ -9,23 +9,23 @@ public class CustomerRepository {
     private String URL = "jdbc:sqlite::resource:Chinook_Sqlite.sqlite";
     private Connection conn= null;
 
-    public ArrayList<Customer> getAllCustomers(){
-        ArrayList<Customer> customers = new ArrayList<>();
+    public ArrayList<CustomerAPI> getAllCustomers(){
+        ArrayList<CustomerAPI> customers = new ArrayList<>();
 
         try{
             conn= DriverManager.getConnection(URL);
             PreparedStatement prep =
-                    conn.prepareStatement( "SELECT CustomerId,FirstName, LastName,Country, PostalCode,Phone,Email From Customer");
+                    conn.prepareStatement( "SELECT CustomerId,FirstName, LastName,Country, PostalCode,Phone From Customer");
             ResultSet set = prep.executeQuery();
             while (set.next()){
-                customers.add (new Customer(
+                customers.add (new CustomerAPI(
                         set.getInt("customerId"),
                         set.getString("firstName"),
                         set.getString("lastName"),
                         set.getString("country"),
                         set.getString("postalCode"),
-                        set.getString("phone"),
-                        set.getString("email")
+                        set.getString("phone")
+
                 ));
 
                 System.out.println("Get all went well!");
@@ -78,7 +78,41 @@ public class CustomerRepository {
                 System.out.println(exception.toString());
             }
         }
-        // ---
+        return success;
+    }
+
+    public Boolean updateCustomer(Customer customer){
+        Boolean success = false;
+        try{
+
+            conn = DriverManager.getConnection(URL);
+            PreparedStatement prep =
+                    conn.prepareStatement("UPDATE customer SET FirstName=?, LastName=?,Country=?, PostalCode=?, Phone=?,Email=?" +
+                            " WHERE CustomerId=?");
+
+            prep.setString(1,customer.getFirstName());
+            prep.setString(2,customer.getLastName());
+            prep.setString(3,customer.getCountry());
+            prep.setString(4,customer.getPostalCode());
+            prep.setString(5,customer.getPhone());
+            prep.setString(6,customer.getEmail());
+            prep.setInt(7,customer.getCustomerId());
+
+            int result = prep.executeUpdate();
+            success = (result != 0); // if res = 1; true
+
+            System.out.println("Update went well!");
+
+        }catch(Exception exception){
+            System.out.println(exception.toString());
+        }
+        finally {
+            try{
+                conn.close();
+            } catch (Exception exception){
+                System.out.println(exception.toString());
+            }
+        }
         return success;
     }
 }

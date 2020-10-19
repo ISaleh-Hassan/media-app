@@ -1,5 +1,6 @@
 package com.experis.saleh.spring.viewController;
 import com.experis.saleh.spring.controllers.CustomerController;
+import com.experis.saleh.spring.data_access.CustomerAPI;
 import com.experis.saleh.spring.data_access.CustomerRepository;
 import com.experis.saleh.spring.models.Customer;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,7 @@ public class CustomerViewController {
 
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
     public String showAllCustomemrs(Model model){
-        ArrayList<Customer> customers = customerRepository.getAllCustomers();
+        ArrayList<CustomerAPI> customers = customerRepository.getAllCustomers();
         model.addAttribute("customers", customers);
 
         return "customerList";
