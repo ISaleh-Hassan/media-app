@@ -1,4 +1,4 @@
-package com.experis.saleh.spring.models;
+package com.experis.saleh.spring.models.entity;
 
 public class Customer {
     private int customerId;

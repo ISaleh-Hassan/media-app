@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:if="${track.getName()} == null"> No track found</div>
+
+<table th:if="${track.getName()} != null">
+
+    <thead>
+    <tr>
+        <td>Track Name</td>
+        <td>Artist</td>
+        <td>Album</td>
+        <td>Genre</td>
+    </tr>
+    </thead>
+    <tr>
+    <td th:text="${track.getName()}"></td>
+    <td th:text="${track.getArtistName()}"></td>
+    <td th:text="${track.getAlbumName()}"></td>
+    <td th:text="${track.getGenre()}"></td>
+    </tr>
+
+</table>
+</body>
+</html>

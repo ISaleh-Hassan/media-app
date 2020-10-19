@@ -1,14 +1,14 @@
-package com.experis.saleh.spring.models.ApiModels;
+package com.experis.saleh.spring.models.daoModels;
 
-public class CustomerQuantityPerCountryApi {
+public class CustomerQuantityPerCountryDao {
     private int numberOfCustomers;
     private String Country;
 
-    public CustomerQuantityPerCountryApi(){
+    public CustomerQuantityPerCountryDao(){
 
     }
 
-    public CustomerQuantityPerCountryApi(String country, int numberOfCustomers) {
+    public CustomerQuantityPerCountryDao(String country, int numberOfCustomers) {
         Country = country;
         this.numberOfCustomers = numberOfCustomers;
 

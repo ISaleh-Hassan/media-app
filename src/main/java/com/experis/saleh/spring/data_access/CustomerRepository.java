@@ -1,18 +1,21 @@
 package com.experis.saleh.spring.data_access;
 
-import com.experis.saleh.spring.models.ApiModels.CustomerQuantityPerCountryApi;
-import com.experis.saleh.spring.models.Customer;
-import com.experis.saleh.spring.models.ApiModels.CustomerApi;
+import com.experis.saleh.spring.models.daoModels.CustomerFavoriteGenreDao;
+import com.experis.saleh.spring.models.daoModels.CustomerQuantityPerCountryDao;
+import com.experis.saleh.spring.models.daoModels.CustomerSpentDao;
+import com.experis.saleh.spring.models.entity.Customer;
+import com.experis.saleh.spring.models.daoModels.CustomerDao;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CustomerRepository {
     private String URL = "jdbc:sqlite::resource:Chinook_Sqlite.sqlite";
     private Connection conn= null;
 
-    public ArrayList<CustomerApi> getAllCustomers(){
-        ArrayList<CustomerApi> customers = new ArrayList<>();
+    public ArrayList<CustomerDao> getAllCustomers(){
+        ArrayList<CustomerDao> customers = new ArrayList<>();
 
         try{
             conn= DriverManager.getConnection(URL);
@@ -20,7 +23,7 @@ public class CustomerRepository {
                     conn.prepareStatement( "SELECT CustomerId,FirstName, LastName,Country, PostalCode,Phone From Customer");
             ResultSet set = prep.executeQuery();
             while (set.next()){
-                customers.add (new CustomerApi(
+                customers.add (new CustomerDao(
                         set.getInt("customerId"),
                         set.getString("firstName"),
                         set.getString("lastName"),
@@ -46,8 +49,8 @@ public class CustomerRepository {
     }
 
 
-    public ArrayList<CustomerQuantityPerCountryApi> getCustomerQuantityPerCountry(){
-        ArrayList<CustomerQuantityPerCountryApi> customerQuantity = new ArrayList<>();
+    public ArrayList<CustomerQuantityPerCountryDao> getCustomerQuantityPerCountry(){
+        ArrayList<CustomerQuantityPerCountryDao> customerQuantity = new ArrayList<>();
 
         try{
             conn= DriverManager.getConnection(URL);
@@ -55,7 +58,7 @@ public class CustomerRepository {
                     conn.prepareStatement( "SELECT Customer.Country as Country, COUNT(*) as Quantity FROM Customer GROUP BY Customer.Country Order By COUNT(*) DESC");
             ResultSet set = prep.executeQuery();
             while (set.next()){
-                customerQuantity.add (new CustomerQuantityPerCountryApi(
+                customerQuantity.add (new CustomerQuantityPerCountryDao(
                         set.getString("Country"),
                         set.getInt("Quantity")
                 ));
@@ -147,4 +150,68 @@ public class CustomerRepository {
         }
         return success;
     }
+
+    public ArrayList<CustomerSpentDao> getAllTopSpenders(){
+        ArrayList<CustomerSpentDao> allCustomers = new ArrayList<>();
+        try{
+            conn = DriverManager.getConnection(URL);
+            PreparedStatement prep = conn.prepareStatement("select customer.firstName, customer.LastName, SUM(Total) as totalAmount from Invoice inner join Customer customer on Invoice.CustomerId = customer.CustomerId group by Invoice.CustomerId order by TotalAmount desc");
+            ResultSet resultSet = prep.executeQuery();
+            while(resultSet.next()) {
+                allCustomers.add(new CustomerSpentDao(
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"),
+                        resultSet.getString("totalAmount"))
+                );
+            }
+        }
+        catch (SQLException throwables){
+            throwables.printStackTrace();
+        }
+        finally {
+            try{
+                conn.close();
+            }
+            catch (SQLException sqlException){
+                sqlException.printStackTrace();
+            }
+        }
+        return allCustomers;
+    }
+
+    public CustomerFavoriteGenreDao getCustomerFavoriteGenres(int customerId){
+        CustomerFavoriteGenreDao customer = new CustomerFavoriteGenreDao();
+        HashMap<String,Integer> favoriteGenresMap = new HashMap<>();
+        try{
+            conn = DriverManager.getConnection(URL);
+            PreparedStatement prep = conn.prepareStatement("select customer.FirstName as firstName, customer.LastName as lastName, genre.Name as Genre ,count(*) as total from InvoiceLine inner join Invoice invoice on invoice.InvoiceId = InvoiceLine.InvoiceId inner join Customer customer on customer.CustomerId = invoice.CustomerId inner join Track track on InvoiceLine.TrackId = track.TrackId inner join Genre genre on track.GenreId = genre.GenreId where invoice.CustomerId = ? group by genre.Name order by total desc limit 2;");
+            prep.setInt(1, customerId);
+            ResultSet resultSet = prep.executeQuery();
+
+            String firstName = resultSet.getString("firstName");
+            String lastName  = resultSet.getString("lastName");
+            int max = resultSet.getInt("total");
+            while(resultSet.next()) {
+                if(max == resultSet.getInt("total")){
+                    favoriteGenresMap.put(resultSet.getString("Genre"),max);
+                }
+            }
+            customer.setFirstName(firstName);
+            customer.setLastName(lastName);
+            customer.setFavoriteGenres(favoriteGenresMap);
+        }
+        catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        finally {
+            try{
+                conn.close();
+            }
+            catch (SQLException sqlException){
+                sqlException.printStackTrace();
+            }
+        }
+        return customer;
+    }
+
 }

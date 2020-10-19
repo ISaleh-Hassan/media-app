@@ -1,5 +1,5 @@
-package com.experis.saleh.spring.models.ApiModels;
-public class CustomerApi {
+package com.experis.saleh.spring.models.daoModels;
+public class CustomerDao {
     private int customerId;
     private String firstName;
     private String lastName;
@@ -8,7 +8,7 @@ public class CustomerApi {
     private String phone;
 
 
-    public CustomerApi(int costomerId, String firstName, String lastName, String country, String postalCode, String phone){
+    public CustomerDao(int costomerId, String firstName, String lastName, String country, String postalCode, String phone){
         this.customerId = costomerId;
         this.firstName= firstName;
         this.lastName= lastName;

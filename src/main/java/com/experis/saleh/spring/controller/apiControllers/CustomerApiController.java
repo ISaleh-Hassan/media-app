@@ -1,9 +1,9 @@
-package com.experis.saleh.spring.apiControllers;
+package com.experis.saleh.spring.controller.apiControllers;
 
-import com.experis.saleh.spring.models.ApiModels.CustomerApi;
+import com.experis.saleh.spring.models.daoModels.CustomerDao;
 import com.experis.saleh.spring.data_access.CustomerRepository;
-import com.experis.saleh.spring.models.ApiModels.CustomerQuantityPerCountryApi;
-import com.experis.saleh.spring.models.Customer;
+import com.experis.saleh.spring.models.daoModels.CustomerQuantityPerCountryDao;
+import com.experis.saleh.spring.models.entity.Customer;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,14 +13,14 @@ public class CustomerApiController {
     CustomerRepository customerRepository = new CustomerRepository();
 
     @GetMapping(value = "/api/customers")
-    public ArrayList<CustomerApi> getAllCustomers(){
-        ArrayList<CustomerApi> allCustomers  = customerRepository.getAllCustomers();
+    public ArrayList<CustomerDao> getAllCustomers(){
+        ArrayList<CustomerDao> allCustomers  = customerRepository.getAllCustomers();
         return allCustomers;
     }
 
     @GetMapping(value = "/api/customer/quantityPerCountry")
-    public ArrayList<CustomerQuantityPerCountryApi> getNumberOfCustomerPerCountry(){
-        ArrayList<CustomerQuantityPerCountryApi> numberOfCustomerPerCountry   = customerRepository.getCustomerQuantityPerCountry();
+    public ArrayList<CustomerQuantityPerCountryDao> getNumberOfCustomerPerCountry(){
+        ArrayList<CustomerQuantityPerCountryDao> numberOfCustomerPerCountry   = customerRepository.getCustomerQuantityPerCountry();
         return numberOfCustomerPerCountry;
     }
 
