@@ -2,60 +2,78 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Home</title>
     <link th:href="@{/styles/HomePage.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
-<body>
+<body class="bg-secondary">
+    <div class="container">
+        <div>
+            <h3 class="text-light pt-5">Welcome to media app</h3>
+        </div>
 
-<h1> HELLO WORLD</h1>
+        <div class="row">
+            <div class="col-12 mt-1">
+                <form action="#" th:action="@{/search}" method="get">
+                    <input class="form-control" id = "searchText" type="text" th:name="trackName"/>
+                    <input class="btn btn-outline-primary mt-2" id ="submitButton" type="submit" value="Search">
+                </form>
 
-<form action="#" th:action="@{/search}" method="get">
-    <input id = "searchText" type="text" th:name="trackName"/>
-    <input id ="submitButton" type="submit" value="Search">
-</form>
+            </div>
+        </div>
 
+        <div class="row mt-5">
+            <div class="col-sm">
+                <table  class="table table-striped table-dark">
+                    <thead scope="col">
+                    <tr>
+                        <td class="text-secondary"> <h3>Random Artists</h3> </td>
+                    </tr>
+                    </thead>
 
+                    <tr th:each="artist :${artists}">
+                        <td th:text="${artist}"></td>
 
-<table class="tableStyle">
-    <thead class="tableHeader">
-    <tr>
-        <td>5 Random Genres</td>
-    </tr>
-    </thead>
+                    </tr>
+                </table >
+            </div>
 
-    <tr  th:each="genre :${genres}">
-        <td th:text="${genre}"></td>
+            <div class="col-sm">
+                <table  class="table table-striped table-dark">
+                    <thead scope="col">
+                    <tr>
 
-    </tr>
-</table>
+                        <td class="text-secondary"> <h3> Random Tracks</h3></td>
+                    </tr>
+                    </thead>
 
-<table  class="tableStyle">
-    <thead>
-    <tr>
-        <td>5 Random Artists</td>
-    </tr>
-    </thead>
+                    <tr th:each="track :${tracks}">
+                        <td th:text="${track}"></td>
+                    </tr>
+                </table>
+            </div>
 
-    <tr th:each="artist :${artists}">
-        <td th:text="${artist}"></td>
+            <div class="col-sm">
+                <table class="table table-striped table-dark">
+                    <thead scope="col">
+                    <tr>
+                        <td class="text-secondary"><h3>Random Genres</h3></td>
+                    </tr>
+                    </thead>
 
-    </tr>
-</table >
+                    <tr  th:each="genre :${genres}">
+                        <td th:text="${genre}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 
-<table  class="tableStyle">
-    <thead>
-    <tr>
-        <td>5 Random Tracks</td>
-    </tr>
-    </thead>
-
-    <tr th:each="track :${tracks}">
-        <td th:text="${track}"></td>
-
-    </tr>
-</table>
 
 
 <script type ="text/javascript">
@@ -71,5 +89,8 @@
         })
     });
 </script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 </html>
