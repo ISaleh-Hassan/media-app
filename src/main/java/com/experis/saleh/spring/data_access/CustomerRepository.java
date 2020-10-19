@@ -1,6 +1,8 @@
 package com.experis.saleh.spring.data_access;
 
+import com.experis.saleh.spring.models.ApiModels.CustomerQuantityPerCountryApi;
 import com.experis.saleh.spring.models.Customer;
+import com.experis.saleh.spring.models.ApiModels.CustomerApi;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,8 +11,8 @@ public class CustomerRepository {
     private String URL = "jdbc:sqlite::resource:Chinook_Sqlite.sqlite";
     private Connection conn= null;
 
-    public ArrayList<CustomerAPI> getAllCustomers(){
-        ArrayList<CustomerAPI> customers = new ArrayList<>();
+    public ArrayList<CustomerApi> getAllCustomers(){
+        ArrayList<CustomerApi> customers = new ArrayList<>();
 
         try{
             conn= DriverManager.getConnection(URL);
@@ -18,7 +20,7 @@ public class CustomerRepository {
                     conn.prepareStatement( "SELECT CustomerId,FirstName, LastName,Country, PostalCode,Phone From Customer");
             ResultSet set = prep.executeQuery();
             while (set.next()){
-                customers.add (new CustomerAPI(
+                customers.add (new CustomerApi(
                         set.getInt("customerId"),
                         set.getString("firstName"),
                         set.getString("lastName"),
@@ -41,6 +43,36 @@ public class CustomerRepository {
             }
         }
         return customers;
+    }
+
+
+    public ArrayList<CustomerQuantityPerCountryApi> getCustomerQuantityPerCountry(){
+        ArrayList<CustomerQuantityPerCountryApi> customerQuantity = new ArrayList<>();
+
+        try{
+            conn= DriverManager.getConnection(URL);
+            PreparedStatement prep =
+                    conn.prepareStatement( "SELECT Customer.Country as Country, COUNT(*) as Quantity FROM Customer GROUP BY Customer.Country Order By COUNT(*) DESC");
+            ResultSet set = prep.executeQuery();
+            while (set.next()){
+                customerQuantity.add (new CustomerQuantityPerCountryApi(
+                        set.getString("Country"),
+                        set.getInt("Quantity")
+                ));
+
+                System.out.println("Get all went well!");
+            }
+        } catch (Exception exception) {
+            System.out.println(exception.toString());
+        }
+        finally {
+            try {
+                conn.close();
+            } catch (Exception exception){
+                System.out.println(exception.toString());
+            }
+        }
+        return customerQuantity;
     }
 
     public Boolean addCustomer(Customer customer){

@@ -1,5 +1,5 @@
-package com.experis.saleh.spring.data_access;
-public class CustomerAPI {
+package com.experis.saleh.spring.models.ApiModels;
+public class CustomerApi {
     private int customerId;
     private String firstName;
     private String lastName;
@@ -8,7 +8,7 @@ public class CustomerAPI {
     private String phone;
 
 
-    public CustomerAPI(int costomerId, String firstName, String lastName, String country, String postalCode, String phone){
+    public CustomerApi(int costomerId, String firstName, String lastName, String country, String postalCode, String phone){
         this.customerId = costomerId;
         this.firstName= firstName;
         this.lastName= lastName;
