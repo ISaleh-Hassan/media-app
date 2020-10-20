@@ -1,6 +1,6 @@
 # MediaApp
 
-This project is created by [Johnny Hoang](https://github.com/flaakan) and [Saleh Hassan](https://github.com/ISaleh-Hassan).
+This project is created by [Saleh Hassan](https://github.com/ISaleh-Hassan) and [Johnny Hoang](https://github.com/flaakan).
 
 Link to [Heroku](https://ancient-castle-33563.herokuapp.com/).
 
